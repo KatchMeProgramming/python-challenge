@@ -29,6 +29,8 @@ GreatestProfitDecreasesDate = ""
 with open(csvpath, newline='') as csvfile:
     csv_reader = csv.reader(csvfile)
     next(csv_reader)  # Skip the header row
+
+    previous_profit_loss = 0 # Initalize previous profit / lost value
     
     for row in csv_reader:
 
@@ -41,6 +43,16 @@ with open(csvpath, newline='') as csvfile:
         if TotalMonths > 1:
             profit_loss_change = current_profit_loss - previous_profit_loss
             ProfitLossesList.append(profit_loss_change)
+
+             # Calculate the Greatest Increase in Profits and corresponding date
+            if profit_loss_change > GreatestProfitIncreasesAmount:
+                GreatestProfitIncreasesAmount = profit_loss_change
+                GreatestProfitIncreasesDate = row[0] 
+
+             # Calculate the Greatest Decrease in Profits and corresponding date
+            if profit_loss_change < GreatestProfitDecreasesAmount:
+                GreatestProfitDecreasesAmount = profit_loss_change
+                GreatestProfitDecreasesDate= row[0] 
         
         previous_profit_loss = current_profit_loss
 
@@ -50,18 +62,6 @@ with open(csvpath, newline='') as csvfile:
 
         else:
             AverageProfitLossesChanges = 0
-
-        # Calculate the Greatest Increase in Profits and corresponding date
-
-        if int(row[1]) > GreatestProfitIncreasesAmount:
-            GreatestProfitIncreasesAmount = int(row[1])
-            GreatestProfitIncreasesDate = row[0] 
-    
-        # Calculate the Greatest Decrease in Profits and corresponding date
-            
-        if int(row[1]) < GreatestProfitDecreasesAmount:
-            GreatestProfitDecreasesAmount = int(row[1])
-            GreatestProfitDecreasesDate= row[0] 
 
 print("Financial Analysis")
 print("---------------------------------------------------------------------")
@@ -86,5 +86,3 @@ file.write(f"Greatest Decrease in Profits: {GreatestProfitDecreasesDate}, $({Gre
 
 # Close the file
 file.close()
-
-
